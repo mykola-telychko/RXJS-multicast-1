@@ -1,13 +1,17 @@
 import { Subject, interval } from 'rxjs';
-import { take, tap, multicast, mapTo } from 'rxjs/operators';
+import { take, tap, multicast, mapTo, endWith } from 'rxjs/operators';
 
+//https://www.learnrxjs.io/learn-rxjs/operators/multicasting/multicast
+
+// Example 1: multicast with standard Subject
 //emit every 2 seconds, take 5
 const srcInterval = interval(2000).pipe(take(5));
 
 const example = srcInterval.pipe(
   //since we are multicasting below, side effects will be executed once
-  tap(() => console.log('Side Effect #1')),
-  mapTo('Result!')
+  tap((x) => console.log('Side Effect #1_' + x)),
+  mapTo('Result!'),
+  endWith('<----end---->')
 );
 
 //subscribe subject to source upon connect()
